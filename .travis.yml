@@ -11,4 +11,4 @@ before_install:
 
 script:
   - if test ${CC} = gcc ; then touch Jamroot ; bjam toolset=gcc ; fi
-  - if test ${CC} = clang ; then touch Jamroot ; bjam toolset=clang ; fi
+#  - if test ${CC} = clang ; then touch Jamroot ; bjam toolset=clang ; fi
