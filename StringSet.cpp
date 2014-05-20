@@ -129,10 +129,29 @@ int StringSet::size() const{
 }
 
 
-/*
-StringSet StringSet::unions(const StringSet & source) const{
-	this->stringArray
-*/
+
+StringSet StringSet::unions(const StringSet & source) const {
+	bool duplicate = true;
+
+	for(int i = 0; i < this->top; ++i) {
+		for(int j = 0; j < source.top; j++){
+			duplicate = this->stringArray[i] == source.stringArray[j];
+			if(!duplicate){
+				if (this->top == this->length) {
+					std::string* temp = new std::string[this->length*2];
+					for(int k = 0; k < this->length; ++k) {
+					temp[k] = this->stringArray[k];
+					}
+					this->length *= 2;
+					delete[] this->stringArray;
+					this->stringArray = temp;	
+				}
+				this->stringArray[top] = source.stringArray[j];
+				this->top++;
+			}
+		}
+	}
+}
 
 
 /*
