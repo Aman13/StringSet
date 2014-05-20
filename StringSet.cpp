@@ -2,215 +2,140 @@
 
 #include "StringSet.h"
 
-/*StringSet::StringSet() {
-	length = 4;
-	top = 0;
-	std::string* stringArray = new std::string[length];
-		for(int i = 0; i < length; i++) {
-		std::cout << stringArray[i] << std::endl;
-	}
-	
-}
-
-bool StringSet::insert(std::string value) {
-	bool duplicate = false;
-
-	for(int i = 0; i < this->top && !duplicate; ++i) {
-		duplicate = stringArray[i] == value; 
-	}
-	if(duplicate)
-		return false;
-	if (top == length) {
-		length = 2 * length;
-		std::string* temp = stringArray;
-		stringArray = new std::string[length];
-		for(int i = 0; i < top; i++) {
-			stringArray[i] = temp[i];
-		}
-		delete[] temp;
-	}
-}
-*/
-StringSet::StringSet() {
+//Default Constructor
+StringSet::StringSet()	{
 	length = 4;
 	top = 0;
 	this->stringArray = new std::string[this->length];
 }
-
-StringSet::StringSet(const StringSet & source) {
-	std::cout << "copy constructor" << std::endl;
+//Copy Constructor - Creates Deep Copy
+StringSet::StringSet(const StringSet & source)	{
 	this->length = source.length;
 	this->top = source.top;
 	this->stringArray = new std::string[this->length];
-
-	for(int i = 0; i < top; ++i){
+	for(int i = 0; i < top; ++i)	{
 		this->stringArray[i] = source.stringArray[i];
 	}
 
 }
 
-StringSet::~StringSet() {
+StringSet::~StringSet()	{
 	delete[] this->stringArray;
 }
 
-bool StringSet::insert(std::string value) {
+//	Inserts a string into the array, if it does not already contain that string
+bool StringSet::insert(std::string value)	{
 	bool duplicate = false;
-
-	for(int i = 0; i < this->top && !duplicate; ++i) {
+	//The loop checks the set with the new entry, if there is a duplicate
+	//duplicate becomes true, and the loop stops
+	for(int i = 0; i < this->top && !duplicate; ++i)	{
 		duplicate = this->stringArray[i] == value;
 	}
-	if(duplicate) {
+	if(duplicate)	{
 		return false;
 	}
-	if (this->top == this->length) {
+	//Before we attempt to insert the new string, must make sure the array has space
+	//if the top is equal to length, that means the array must be made larger.
+	//A temporary array is made to hold the entries, and then a larger array 
+	//is created and given the entries.
+	if (this->top == this->length)	{
 		std::string* temp = new std::string[this->length*2];
-		for(int i = 0; i < this->length; ++i) {
+		for(int i = 0; i < this->length; ++i)	{
 			temp[i] = this->stringArray[i];
 		}
-		std:: cout << "Array filled up, doubling space" << std::endl;
 		this->length *= 2;
 		delete[] this->stringArray;
 		this->stringArray = temp;
 	}
-	std::cout << "inserting string: " << value << ", into array " << std::endl;
 	this->stringArray[top] = value;
 	this->top++;
-	std::cout << "array currently contains: " << std::endl;
-	for(int i = 0; i < this->top; i++) {
-		std::cout << stringArray[i] << std::endl;
-	}
 }
-
-bool StringSet::remove(std::string entry) {
+// Removes a string if it is in the array
+bool StringSet::remove(std::string entry)	{
 	bool duplicate = false;
 	int check = 0;
 
-	for(check; check < this-> top && !duplicate; ++check) {
+	for(check; check < this-> top && !duplicate; ++check)	{
 		duplicate = this->stringArray[check] == entry;
-		}
-
-	if(duplicate) {
-		std::cout <<"removable string found, removing string: " << entry << std::endl << "current array contains: " << std::endl;
+	}
+	//Loops through looking for a duplicate, if it finds a duplicate
+	//The duplicate word is replaced by the last word in the array
+	//Top is decremented to now point to the last entry and is then put
+	//into the position of the removed entery
+	if(duplicate)	{
 		check--;
 		this->top--;
 		this->stringArray[check] = this->stringArray[this->top];
-		for(int i = 0; i < this->top; i++) {
-		std::cout << stringArray[i] << std::endl;
-		}
 		return true;
-	}	
-	
-	if(!duplicate){
-			std::cout <<"no matching string found containing:" << entry << std::endl;
+	}		
+	if(!duplicate)	{
 			return false;
 	}
 }
 
-int StringSet::find(std::string address) const {
+//Looks for a specific string located in the array
+int StringSet::find(std::string address)	const{
 	bool duplicate = false;
 	int index = 0;
-	for( index; index < this-> top && !duplicate; ++index) {
+	for(index; index < this-> top && !duplicate; ++index)	{
 		duplicate = this->stringArray[index] == address;
 	}
-	if(duplicate) {
+	//If the string is found, it returns the index of the string,
+	//if it does not exist in the array it returns -1
+	if(duplicate)	{
 		index--;
-		std::cout << "The Index for string: " << address << " is: " << index << std::endl;
 		return index;
 	}
-	if(!duplicate) {
-		std::cout << "The string: " << address << ", is not in the array" << std::endl;
+	if(!duplicate)	{
 		return -1;	
 	}
 }
-
-int StringSet::size() const{
-	std::cout << "there are currently: " << this->top << " strings in the array" << std::endl;
+//Returns how many entries are in an array, because arrays have an index of 0,
+//the next spot variable can be returned for the current size 
+int StringSet::size()	const{
 	return this->top;
 }
-
-
-
-StringSet StringSet::unions(const StringSet & source) const{
+//Constructs the union of two sets and returns the result
+//Using the insert function, and inserting one set after the other
+//into the new set, insures no string is inserted more than once
+StringSet StringSet::unions(const StringSet & source)	const{
 	StringSet newString;
-	for(int i = 0; i < this->top; ++i){
+	for(int i = 0; i < this->top; ++i)	{
 		newString.insert(this->stringArray[i]);
 	}
-	for(int i = 0; i < source.top; ++i) {
+	for(int i = 0; i < source.top; ++i)	{
 		newString.insert(source.stringArray[i]);
 	}
 	return newString;
 }
-
-StringSet StringSet::intersection(const StringSet & source) const{
+//Constructs the intersection of two sets and returns the result
+StringSet StringSet::intersection(const StringSet & source)	const{
 	StringSet newString;
 	int b = 0;
-
-	for(int i = 0; i < this->top; ++i){
-		for(int j = 0; j < source.top;++j){
+	//Because the intersection requires both sets to contain the string
+	//the nested for loop, is required to make sure no string is missed
+	//Using the find function return of -1 meaning there is no match
+	//to choose which string should be inserted into the new set
+	for(int i = 0; i < this->top; ++i)	{
+		for(int j = 0; j < source.top;++j)	{
 			b = this->stringArray[i].find(source.stringArray[j]);
-			std::cout << "b: " << b << std::endl;
-			if(b > -1) {
+			if(b > -1)	{
 				newString.insert(this->stringArray[i]);
 			}
 		}
 	}
 	return newString;
 }
-
+//Constructs the difference of two sets and returns the result
 StringSet StringSet::difference(const StringSet & source) const{
 	StringSet newString;
 	for(int i = 0; i < this->top; ++i){
 		newString.insert(this->stringArray[i]);
 	}
+	//The new sets is given all the values of the object set
+	//and parameter set is then called to remove any string it contains
 	for(int i = 0; i < source.top; ++i){
 		newString.remove(source.stringArray[i]);
 	}
 	return newString;
 }
-/*
-	bool duplicate = true;
-	for(int i = 0; i < this->top; ++i) {
-		for(int j = 0; j < source.top; j++){
-			duplicate = this->stringArray[i] == source.stringArray[j];
-			if(!duplicate){
-				if (this->top == this->length) {
-					std::string* temp = new std::string[this->length*2];
-					for(int k = 0; k < this->length; ++k) {
-					temp[k] = this->stringArray[k];
-					}
-					this->length *= 2;
-					delete[] this->stringArray;
-					this->stringArray = temp;	
-				}
-				this->stringArray[top] = source.stringArray[j];
-				this->top++;
-			}
-		}
-	}
-
-}
-*/
-
-
-/*
-	if (this->top == this->length) {
-		std::string* temp = new std::string[this->length*2];
-		for(int i = 0; i < this->length; ++i) {
-			temp[i] = this->stringArray[i];
-		}
-		std:: cout << "Array filled up, doubling space" << std::endl;
-		this->length *= 2;
-		delete[] this->stringArray;
-		this->stringArray = temp;
-	}
-
-		if(this->top == this->length) {
-		std::string* temp = new std::string[this->length*2];
-		this->stringArray = new std::string[this->length*2];
-		for(int i = 0; i < this->top; ++i) {
-			this->stringArray[i] = temp[i];
-		}
-		delete[] temp;
-		this->length *=2;
-	}
-	*/
