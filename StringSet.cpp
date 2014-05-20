@@ -1,4 +1,4 @@
-//Function Definitions
+//Function Definitions --
 
 #include "StringSet.h"
 
@@ -35,9 +35,8 @@ StringSet::StringSet() {
 	length = 4;
 	top = 0;
 	this->stringArray = new std::string[this->length];
-	//std::string* stringArray = new std::string[l];
 }
-/*
+
 StringSet::StringSet(const StringSet & source) {
 	std::cout << "copy constructor" << std::endl;
 	this->length = source.length;
@@ -49,7 +48,7 @@ StringSet::StringSet(const StringSet & source) {
 	}
 
 }
-*/
+
 StringSet::~StringSet() {
 	delete[] this->stringArray;
 }
@@ -128,6 +127,13 @@ int StringSet::size() const{
 	std::cout << "there are currently: " << this->top << " strings in the array" << std::endl;
 	return this->top;
 }
+
+
+/*
+StringSet StringSet::unions(const StringSet & source) const{
+	this->stringArray
+*/
+
 
 /*
 	if (this->top == this->length) {
