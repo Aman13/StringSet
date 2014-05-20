@@ -23,9 +23,14 @@ public:
 
 	StringSet unions(const StringSet & source) const;
 
+	StringSet intersection(const StringSet & source) const;
+
+	StringSet difference(const StringSet & source) const;
+
 private:
 	
 	std::string* stringArray;
+	std::string* newString;
 	int length;
 	int top;
 };

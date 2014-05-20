@@ -130,9 +130,45 @@ int StringSet::size() const{
 
 
 
-StringSet StringSet::unions(const StringSet & source) const {
-	bool duplicate = true;
+StringSet StringSet::unions(const StringSet & source) const{
+	StringSet newString;
+	for(int i = 0; i < this->top; ++i){
+		newString.insert(this->stringArray[i]);
+	}
+	for(int i = 0; i < source.top; ++i) {
+		newString.insert(source.stringArray[i]);
+	}
+	return newString;
+}
 
+StringSet StringSet::intersection(const StringSet & source) const{
+	StringSet newString;
+	int b = 0;
+
+	for(int i = 0; i < this->top; ++i){
+		for(int j = 0; j < source.top;++j){
+			b = this->stringArray[i].find(source.stringArray[j]);
+			std::cout << "b: " << b << std::endl;
+			if(b > -1) {
+				newString.insert(this->stringArray[i]);
+			}
+		}
+	}
+	return newString;
+}
+
+StringSet StringSet::difference(const StringSet & source) const{
+	StringSet newString;
+	for(int i = 0; i < this->top; ++i){
+		newString.insert(this->stringArray[i]);
+	}
+	for(int i = 0; i < source.top; ++i){
+		newString.remove(source.stringArray[i]);
+	}
+	return newString;
+}
+/*
+	bool duplicate = true;
 	for(int i = 0; i < this->top; ++i) {
 		for(int j = 0; j < source.top; j++){
 			duplicate = this->stringArray[i] == source.stringArray[j];
@@ -151,7 +187,9 @@ StringSet StringSet::unions(const StringSet & source) const {
 			}
 		}
 	}
+
 }
+*/
 
 
 /*
