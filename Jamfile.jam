@@ -1,2 +1,1 @@
-import testing ;
-unit-test main : [ glob *.cpp ] : ;
+exe main : [ glob *.cpp ] : ;
